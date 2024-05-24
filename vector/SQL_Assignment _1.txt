@@ -1,0 +1,13 @@
+1. Print the Customers table, order output in descending order of CustomerID.
+  SELECT * FROM Customers ORDER BY CustomerID DESC
+
+2. Print all details of Customer with the FirstName Jonathan and LastName Calvin
+  SELECT * FROM Customers WHERE FirstName = 'Jonathan' AND LastName = 'Calvin
+
+3 Print all the unique City names the customers belong to, order output in alphabetical order of City name.
+  SELECT DISTINCT City FROM Customers ORDER BY City
+
+4. Print details of orders which have total order amount between 10000 and 20000 (both inclusive).Sort your output in ascending order of OrderID.
+  SELECT * FROM Orders WHERE Total_order_amount BETWEEN 10000 and 20000 ORDER BY OrderID ASC
+  // The BETWEEN operator is inclusive: begin and end values are included. 
+  
