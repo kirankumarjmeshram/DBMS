@@ -10,4 +10,9 @@
 4. Print details of orders which have total order amount between 10000 and 20000 (both inclusive).Sort your output in ascending order of OrderID.
   SELECT * FROM Orders WHERE Total_order_amount BETWEEN 10000 and 20000 ORDER BY OrderID ASC
   // The BETWEEN operator is inclusive: begin and end values are included. 
-  
+
+
+
+
+Print all details of Customers whose City is New York or Denver. Sort the result set in ascending order of CustomerID.
+  SELECT * FROM Customers WHERE City IN('New York','Denver') ORDER BY CustomerID ASC
