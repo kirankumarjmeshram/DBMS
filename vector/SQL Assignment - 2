@@ -1,1 +1,7 @@
+1. Count the number of Customers from Germany
+  SELECT COUNT(*) FROM Customers WHERE Country = 'Germany'
 
+2. Print the total revenue made by the company which was received through Payment Id - 2.
+  SELECT SUM(Total_order_amount) FROM Orders WHERE PaymentID = 2
+
+3. 
