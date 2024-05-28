@@ -4,4 +4,21 @@
 2. Print the total revenue made by the company which was received through Payment Id - 2.
   SELECT SUM(Total_order_amount) FROM Orders WHERE PaymentID = 2
 
-3. 
+3. Print the first and the last order dates on which the orders were placed as stored in the database.
+  SELECT MIN(OrderDate) as First_Order_Date, MAX(OrderDate) as Last_Order_Date FROM Orders
+
+4. Print the least order amount placed by any customer.
+  SELECT MIN(Total_order_amount) FROM Orders
+
+5. Find the Number of Customers belonging to each Country. Print the Country column first followed by the Number of Customers belonging to each Country in the second column. Sort the result in alphabetical order of Country Names.
+  SELECT Country, COUNT(*) as number_of_customer FROM Customers GROUP BY Country ORDER BY Country
+
+6. Get the Total Quantity of products ordered for each order. Print the columns Order ID and Total Quantity in the output. Sort the result set in ascending order of Order ID.
+
+
+7. Get the total number of records for each Brand. Print the Brand name in alphabetical order in the first column followed by number of products for respective brands in second column.
+  SELECT Brand, COUNT(*) as Num_of_Records FROM Products GROUP BY Brand ORDER BY Brand ASC
+
+8. Get the city and states which have less than 3 customers. Print City, State and Count of customers who belong to that city. Sort the result set in alphabetical order of City names.
+  SELECT City, State, COUNT(*) as Num_of_Citizen FROM Customers GROUP BY City, State HAVING COUNT(*) < 3 ORDER BY City
+
