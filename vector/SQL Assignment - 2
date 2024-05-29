@@ -22,3 +22,16 @@
 8. Get the city and states which have less than 3 customers. Print City, State and Count of customers who belong to that city. Sort the result set in alphabetical order of City names.
   SELECT City, State, COUNT(*) as Num_of_Citizen FROM Customers GROUP BY City, State HAVING COUNT(*) < 3 ORDER BY City
 
+9. Get the maximum Market Price of products for each Type. Print the Type in alphabetical order in the first column, followed by the maximum Market Price in the second column.
+  SELECT Type , MAX(Market_Price) as Max_market_price FROM Products GROUP BY Type
+
+10. Get the minimum Sale price of products for each Sub Category. Print the Sub Category in alphabetical order in the first column, followed by corresponding minimum Sale price in the second column.
+  SELECT Sub_Category , MIN(Sale_Price) as Min_sale_price FROM Products GROUP BY Sub_Category ORDER BY Sub_Category ASC
+
+11. Get the average Market Price across combinations of each Brand and Type. Print Brand in first column, Type in second column, followed by corresponding average Market Price in the third column.
+Sort the result set in alphabetical order of Brand, for rows with same Brand, sort them in alphabetical order of Type.
+  SELECT Brand, Type, AVG(Market_Price) as Average_market_price FROM Products GROUP BY BRAND, TYPE ORDER BY Brand ASC, Type ASC
+
+12.Identify the number of orders placed in each month of the year 2021. Print Month followed by Number of Orders. Sort the result set in ascending order of Month.
+
+
