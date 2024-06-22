@@ -1,32 +1,60 @@
 Problem Statement ans Ans
+{
+    id: 1,
+    name: 'Felicle',
+    email: 'fbleeze0@nps.gov',
+    gender: 'Female',
+    salary: 84054,
+    department: 'Business Development'
+
+}
 
 1. How can you find employees with an id greater than or equal to 10?
+- db.employees.find({ id: { $gte: 10 } })
 
 2. Find all employees who work in either the "Engineering" or "Marketing" departments.
+- db.employees.find({ department: { $in: ["Engineering", "Marketing"] } })
 
 3. How do you find employees whose gender is in ["Female", "Agender", "Non-binary"]?
+- db.employees.find({ gender: { $in: ["Female", "Agender", "Non-binary"] } })
 
 4. Write a query to find all employees whose department is not in ["Services", "Human Resources"].
+- db.employees.find({ department: { $nin: ["Services", "Human Resources"] } })
 
 5. How can you find employees whose gender is not in ["Male", "Female"]?
+- db.employees.find({ gender: { $nin: ["Male", "Female"] } })
 
 6. Find employees who have a salary greater than 40000 and work in the "Marketing" department.
+- db.employees.find({ salary: { $gt: 40000 }, department: "Marketing" })
 
 7. How do you find employees whose id is less than 10 and gender is "Male"?
+- db.employees.find({ id: { $lt: 10 }, gender: "Male" })
 
 8. Write a query to find employees who either have a salary less than 30000 or work in the "Training" department.
+- db.employees.find({$or:[{salery:{$lt:30000}},{department:"Training"}]})
 
 9. How can you find employees whose id is either 1, 5, or 10?
+- db.employees.find({id:{$in:[1,5,10]}})
 
 10. Find all employees whose salary is not less than 60000.
+- db.employees.find({ salary: { $gte: 60000 } })
 
 11. How do you find employees whose id is not greater than 15?
+- db.employees.find({ id: { $lte: 15 } })
 
 12. Write a query to find employees who have the email field.
+- db.employees.find({email:{$exists:true}})
 
 13. How can you find documents where the projects field does not exist (assuming some employees might have a 'projects' field)?
+- db.employees.find({ projects: { $exists: false } })
 
 14. Retrieve all employees who work in the 'Sales' department, earn more than $60,000, and whose name contains the letter 'r'. Display their names in uppercase, ordered by salary in descending order. Limit the result to 3 entries.
+- db.employees.aggregate([ 
+    {$match: {department: 'Sales', salery: {$gt: 6000}, name: /r/i}},
+    {$project: {_id:0,name: {$toUpper:"$name"}, salery: 1}},
+    {$sort: {salery:-1}},
+    {$limit: 3}
+  ])
 
 15. Find employees whose name starts with 'H' and who earn a salary that is either exactly $66,433 or more than $70,000. Display their name in uppercase, email, and salary, sorted by salary in ascending order.
 
