@@ -57,20 +57,100 @@ Problem Statement ans Ans
   ])
 
 15. Find employees whose name starts with 'H' and who earn a salary that is either exactly $66,433 or more than $70,000. Display their name in uppercase, email, and salary, sorted by salary in ascending order.
+- db.employees.aggregate([
+  { $match: { name: /^H/, $or: [{ salary: 66433 }, { salary: { $gt: 70000 } }] } },
+  { $project: { _id: 0, name: { $toUpper: "$name" }, email: 1, salary: 1 } },
+  { $sort: { salary: 1 } }
+])
+
 
 16. Retrieve the name, email, and department of employees whose salary is between $30,000 and $70,000 and contains the letter 'e' in their name. Display the results in uppercase and sort them by department.
+- db.employees.aggregate([
+  { $match: { salary: { $gte: 30000, $lte: 70000 }, name: /e/i } },
+  { $project: { _id: 0, name: { $toUpper: "$name" }, email: 1, department: 1 } },
+  { $sort: { department: 1 } }
+])
 
 17. Retrieve all employees who work in the 'Sales' department, earn more than $60,000, and whose name contains the letter 'r'. Display their names in uppercase, ordered by salary in descending order. Limit the result to 3 entries.
+- db.employees.aggregate([
+  { $match: { department: 'Sales', salary: { $gt: 60000 }, name: /r/i } },
+  { $project: { _id: 0, name: { $toUpper: "$name" }, salary: 1 } },
+  { $sort: { salary: -1 } },
+  { $limit: 3 }
+])
 
 18. Find all employees whose email domain is either 'intel.com' or 'bloglines.com', whose salary is above $60,000. Display their names in lowercase and order the results by name in ascending order, excluding duplicates.
+- db.employees.aggregate([
+  { $match: { salary: { $gt: 60000 }, $or: [{ email: /@intel\.com$/i }, { email: /@bloglines\.com$/i }] } },
+  { $group: { _id: { name: { $toLower: "$name" } } } },
+  { $sort: { "_id.name": 1 } },
+  { $project: { _id: 0, name: "$_id.name" } }
+])
 
 19. Retrieve all female employees who work in the 'Marketing' department, earn between $30,000 and $35,000, and whose name starts with the letter 'U'. Display their names in uppercase and sort them by salary in ascending order.
+- db.employees.aggregate([
+  { $match: { gender: "Female", department: "Marketing", salary: { $gte: 30000, $lte: 35000 }, name: /^U/ } },
+  { $project: { _id: 0, name: { $toUpper: "$name" }, salary: 1 } },
+  { $sort: { salary: 1 } }
+])
 
 20. Retrieve all employees whose salary is less than $50,000, whose name contains 'a', and who do not work in 'Services'. Display their names and salaries sorted by department and then by salary in descending order.
+- db.employees.find({ salary: { $lt: 50000 }, name: /a/i, department: { $ne: "Services" } })
+             .sort({ department: 1, salary: -1 })
+             .project({ _id: 0, name: 1, salary: 1 })
 
 21. List all employees who do not work in the 'Business Development' department, whose names do not contain the letter 'l', and whose salary is greater than $50,000. Display their names in lowercase, ordered by salary in descending order, and limit the result to 5 entries.
+- db.employees.aggregate([
+  { $match: { department: { $ne: "Business Development" }, name: { $not: /l/i }, salary: { $gt: 50000 } } },
+  { $project: { _id: 0, name: { $toLower: "$name" }, salary: 1 } },
+  { $sort: { salary: -1 } },
+  { $limit: 5 }
+])
 
 22. List all employees who either work in the 'Sales' department and have a salary less than $65,000, or work in the 'Marketing' department and have a salary greater than $30,000 but not equal to $34,337. Additionally, the employee's name should either start with 'D' or end with 'o'. Display their names in lowercase, ordered by salary in ascending order, and limit the result to 5 entries.
+- db.employees.aggregate([
+  {
+    $match: {
+      $or: [
+        { department: "Sales", salary: { $lt: 65000 } },
+        { department: "Marketing", salary: { $gt: 30000, $ne: 34337 } }
+      ],
+      $or: [{ name: /^D/ }, { name: /o$/ }]
+    }
+  },
+  { $project: { _id: 0, name: { $toLower: "$name" }, salary: 1 } },
+  { $sort: { salary: 1 } },
+  { $limit: 5 }
+])
 
 23. Find all employees who work in the 'Services' department and have a salary more than $60,000, or employees who do not work in the 'Marketing' department and have a salary less than $70,000 but more than $50,000. Additionally, these employees should either have a name that starts with 'A' or their email should contain 'nps.gov'. Display their names in uppercase and emails in lowercase, ordered by name in ascending order, and limit the result to 4 entries.
-
+- db.employees.aggregate([
+  {
+    $match: {
+      $or: [
+        { department: 'Services', salary: { $gt: 60000 } },
+        {
+          department: { $ne: 'Marketing' },
+          salary: { $gt: 50000, $lt: 70000 }
+        }
+      ],
+      $or: [
+        { name: /^A/ },
+        { email: /nps\.gov/i }
+      ]
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      name: { $toUpper: "$name" },
+      email: { $toLower: "$email" }
+    }
+  },
+  {
+    $sort: { name: 1 }
+  },
+  {
+    $limit: 4
+  }
+])
